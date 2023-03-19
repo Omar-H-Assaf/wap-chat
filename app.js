@@ -3,7 +3,7 @@ var path = require("path")
 const app = express();
 var loginRoutes = require('./routes/login.js');
 var homeRoutes = require('./routes/home.js');
-
+var signupRoutes = require('./routes/signup.js');
 app.listen(80, () => {
     console.log('Your Server is running on 80');
 });
@@ -14,4 +14,5 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/login',loginRoutes);
+app.use('/signup',signupRoutes);
 app.use('/',homeRoutes);
