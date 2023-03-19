@@ -4,7 +4,7 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: #27ae60;
+    background: #32465a;
     font-family: "proxima-nova", "Source Sans Pro", sans-serif;
     font-size: 1em;
     letter-spacing: 0.1px;
@@ -15,12 +15,10 @@ body {
 }
 
 #frame {
-    width: 95%;
+    width: 100%;
     min-width: 360px;
-    max-width: 1000px;
-    height: 92vh;
+    height: 100vh;
     min-height: 300px;
-    max-height: 720px;
     background: #E6EAEA;
   }
   @media screen and (max-width: 360px) {
