@@ -21,6 +21,9 @@
 <script>try{Typekit.load({ async: true });}catch(e){}</script>
 <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
 <link rel="stylesheet" type="text/css" href="/home.css">
+<link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"  type='text/css'>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
 <script>
     function search(){
         let input = document.getElementById('searchbar').value
@@ -34,6 +37,29 @@
                 contactList[i].style.display="block";
             }
         }
+    }
+
+    function openForm() {
+            document.getElementById("myForm").style.display = "block";
+        }
+
+    function closeForm() {
+        document.getElementById("myForm").style.display = "none";
+    }
+
+    function addUser(name, lastMsg) {
+        $.ajax("/", {
+                "type": "POST",
+                "data": {
+                    "name": name,
+                    "lastMsg": lastMsg
+                },
+            }).done(function (response) {
+                location.reload();
+            })
+                .fail(function () {
+                  alert("error occured please try again later");
+                });
     }
 </script>
 </head>
@@ -55,32 +81,23 @@
             </div>
             <div id="contacts">
                 <ul>
-                    <li class="contact">
-                        <div class="wrap">
-                            <div id="profile-img">
-                                L
+                    <% for(let contact of userContacts) {%>
+                        <li class="contact">
+                            <div class="wrap">
+                                <div id="profile-img">
+                                    <%= contact.name.charAt(0) %>
+                                </div>
+                                <div class="meta">
+                                    <p id="contact-name" class="name"><%= contact.name %></p>
+                                    <p class="preview"><%= contact.lastMsg  %></p>
+                                </div>
                             </div>
-                            <div class="meta">
-                                <p id="contact-name" class="name">Louis Litt</p>
-                                <p class="preview">You just got LITT up, Mike.</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="contact">
-                        <div class="wrap">
-                            <div id="profile-img">
-                                A
-                            </div>
-                            <div class="meta">
-                                <p id="contact-name" class="name">Assaf Assaf</p>
-                                <p class="preview">You just got LITT up, Mike.</p>
-                            </div>
-                        </div>
-                    </li>
+                        </li>
+                    <% } %>
                 </ul>
             </div>
             <div id="bottom-bar">
-                <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
+                <button id="addcontact" onclick="openForm();"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
                 <button id="settings" onclick="logOut();"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Sign out</span></button>
             </div>
         </div>
@@ -122,10 +139,34 @@
             <div class="message-input">
                 <div class="wrap">
                 <input type="text" placeholder="Write your message..." />
-                <button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                <button class="submit"><i class="login__icon fa fa-paper-plane" aria-hidden="true"></i></button>
                 </div>
             </div>
         </div>
+        <div class="form-popup" id="myForm">
+            <div class="form-container">
+                <div id="search">
+                    <input type="text" id="searchbar" onkeyup="search();" 
+                        name="search" placeholder="Search contacts..." />
+                </div>
+                <ul style="margin-bottom: 2rem;">
+                    <% for (contact of contacts) { %>
+                        <li class="contact">
+                            <div class="wrap">
+                                <div class="add-contact">
+                                    <p id="contact-name" class="name"><%= contact.name %></p>
+                                    <button class="add-contact-btn" onclick="addUser('<%= contact.name %>', '<%= contact.lastMsg %>')">Add User</button>
+                                </div>
+                            </div>
+                        </li>
+                    <% } %>
+                    <% if (contacts.length === 0) {%>
+                        <p id="contact-name" class="name">No Users</p>
+                    <% } %>
+                </ul>
+              <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+            </div>
+          </div>
     </div>
     <script >$(".messages").animate({ scrollTop: $(document).height() }, "fast");
     

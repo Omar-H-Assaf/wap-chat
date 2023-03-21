@@ -429,3 +429,67 @@ body {
   #frame .content .message-input .wrap button:focus {
     outline: none;
   }
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 34%;
+  right: 34%;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+@media screen and (max-width: 735px) {
+  .form-popup {
+    right: 10%
+  }
+}
+/* Add styles to the form container */
+.form-container {
+  min-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+  @media screen and (max-width: 735px) {
+    #frame .content .message-input .wrap button {
+      padding: 16px 0;
+    }
+  }
+/* Full-width input fields */
+.form-container input[type=text], .form-container input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+  width: 100%;
+}
+
+.add-contact-btn{
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 50%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+.add-contact {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+}
