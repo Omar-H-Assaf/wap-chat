@@ -21,6 +21,21 @@
 <script>try{Typekit.load({ async: true });}catch(e){}</script>
 <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
 <link rel="stylesheet" type="text/css" href="/home.css">
+<script>
+    function search(){
+        let input = document.getElementById('searchbar').value
+        input=input.toLowerCase();
+        const contactList = document.getElementsByClassName("contact");
+
+        for (i = 0; i < contactList.length; i++) { 
+            if (!contactList[i].childNodes[1].childNodes[3].childNodes[1].innerText.toLowerCase().includes(input)) {
+                contactList[i].style.display="none";
+            } else {
+                contactList[i].style.display="block";
+            }
+        }
+    }
+</script>
 </head>
 <body>
     <div id="frame">
@@ -34,8 +49,9 @@
                 </div>
             </div>
             <div id="search">
-                <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
-                <input type="text" placeholder="Search contacts..." />
+                <label><i class="fa fa-search" aria-hidden="true"></i></label>
+                <input type="text" id="searchbar" onkeyup="search();" 
+                    name="search" placeholder="Search contacts..." />
             </div>
             <div id="contacts">
                 <ul>
@@ -45,7 +61,18 @@
                                 L
                             </div>
                             <div class="meta">
-                                <p class="name">Louis Litt</p>
+                                <p id="contact-name" class="name">Louis Litt</p>
+                                <p class="preview">You just got LITT up, Mike.</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="contact">
+                        <div class="wrap">
+                            <div id="profile-img">
+                                A
+                            </div>
+                            <div class="meta">
+                                <p id="contact-name" class="name">Assaf Assaf</p>
                                 <p class="preview">You just got LITT up, Mike.</p>
                             </div>
                         </div>
