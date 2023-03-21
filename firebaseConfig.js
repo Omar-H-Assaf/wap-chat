@@ -10,4 +10,4 @@
         measurementId: "G-3Y4SKL3G18"
         };
 
-module.exports = firebaseConfig;  
+module.exports = firebaseConfig;
