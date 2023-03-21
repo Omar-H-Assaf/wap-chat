@@ -10,6 +10,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.slim.js" integrity="sha256-dWvV84T6BhzO4vG6gWhsWVKVoa4lVmLnpBOZh/CAHU4=" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"  type='text/css'>
+
     <script>
        function logIn() {
           $.ajax("/login", {
@@ -24,11 +26,13 @@
                 } else {
                   alert("wrong email or passowrd \n please try again");
                 }
-               
             })
                 .fail(function (response) {
                   alert(errorMessage);
                 });
+       }
+       function signUp() {
+            window.location.href =  '/signup';
        }
     </script>
   </head>
@@ -38,17 +42,21 @@
             <div class="screen__content">
                 <div class="login">
                     <div class="login__field">
-                        <i class="login__icon fas fa-user"></i>
+                        <i class="login__icon fa fa-user"></i>
                         <input type="text" class="login__input" id="email" placeholder="Email">
                     </div>
                     <div class="login__field">
-                        <i class="login__icon fas fa-lock"></i>
+                        <i class="login__icon fa fa-lock"></i>
                         <input type="password" class="login__input" id= "password" placeholder="Password">
                     </div>
                     <button class="button login__submit" id="singInButton" onclick="logIn();">
                         <span class="button__text" >Log In Now</span>
-                        <i class="button__icon fas fa-chevron-right"></i>
-                    </button>				
+                        <i class="button__icon fa fa-chevron-right"></i>
+                    </button>
+                    <button class="button login__submit" id="singUpButton" onclick="signUp();">
+                        <span class="button__text" >sign up Now</span>
+                        <i class="button__icon fa fa-chevron-right"></i>
+                    </button>					
                   </div>
             
             </div>
