@@ -4,12 +4,11 @@ const path = require("path");
 
 // Import the Firebase SDK
 const firebase = require('firebase/app');
-const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } = require('firebase/auth');
+const { getAuth, createUserWithEmailAndPassword, updateProfile } = require('firebase/auth');
 const { getDatabase, set, ref, update } = require('firebase/database');
 
 const firebaseConfig = require('../firebaseConfig');
-const app = firebase.initializeApp(firebaseConfig);
-const database = getDatabase(app);
+const database = getDatabase(firebase.initializeApp(firebaseConfig));
 const auth = getAuth();
 
 router.get("/",function(req,res,next){
@@ -17,33 +16,27 @@ router.get("/",function(req,res,next){
 });
 
 router.post("/",function(req,res,next){
-    var email = req.body.email;
-    var password = req.body.password;
-    var username = req.body.username;
-
+    const email = req.body.email;
+    const password = req.body.password;
+    const username = req.body.username;
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-
+        .then((userCredential) => {
+        // Signed in 
         const user = userCredential.user;
-  
+
         set(ref(database, 'users/' + user.uid),{
             username: username,
             email: email
         })
-  
-        console.log('user created!');
-        console.log(user);
-        
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-  
-        console.log(error);
-      
-      });
-  
-       res.send("signup done")
+        updateProfile(auth.currentUser,{
+          displayName: username
+        })
+        res.send("success");
+    }).catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      res.send(errorMessage)
+    });
 });
 
 module.exports = router;

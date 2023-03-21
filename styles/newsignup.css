@@ -176,3 +176,13 @@ body {
 .social-login__icon:hover {
 	transform: scale(1.5);	
 }
+
+.login_text {
+	margin-top: 25px;
+	color:#D4D3E8;
+	font-weight: 700;
+}
+
+a{
+	color: #4C489D !important;
+}

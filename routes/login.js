@@ -5,10 +5,9 @@ var path = require("path");
 // Import the Firebase SDK
 const firebase = require('firebase/app');
 const { getAuth, signInWithEmailAndPassword } = require('firebase/auth');
-const { getDatabase, set, ref, update } = require('firebase/database');
+const { getDatabase, ref, update } = require('firebase/database');
 
 const firebaseConfig = require('../firebaseConfig');
-var app = express();
 const database = getDatabase(firebase.initializeApp(firebaseConfig));
 const auth = getAuth();
 
