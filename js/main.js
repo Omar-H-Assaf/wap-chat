@@ -55,7 +55,7 @@ function openChatRom(userName){
                 if (!intervalId) {
                   intervalId = setInterval(() => {
                     getMessages();
-                  }, 1000);
+                  }, 2000);
                 }
 
                 
@@ -175,19 +175,21 @@ function getMessages(){
             "data":{"chatRoomList":getChatRoomList()}
           })
           .done(function(response){
-          console.log("chatRoomList   =  ",response.newMessageList)
+          console.log("chatRoomList   =  ",response)
           console.log("chatRoomList   =  ",currentOpenedChatRoom)
+         
+          var   newMessageList = getChatRoomsNewMessages()
+          console.log("newMessagesList =  ",newMessageList) 
+        for (var i = 0; i < newMessageList.length; i++) {
+            console.log("response[i].chatRoomName   =  ",newMessageList[i].chatRoomName)
 
-        for (var i = 0; i < response.newMessageList.length; i++) {
-            console.log("response[i].chatRoomName   =  ",response.newMessageList[i].chatRoomName)
-
-            if (response.newMessageList[i].chatRoomName == currentOpenedChatRoom) {
+            if (newMessageList[i].chatRoomName == currentOpenedChatRoom) {
                 const ul = $('.messages ul');
-                for (var j = 0; j < response.newMessageList[i].newMessages.length; j++) {
+                for (var j = 0; j < newMessageList[i].newMessages.length; j++) {
                     //messages
 
                     const messagesDiv = document.querySelector(".messages");
-                    const newMessageText = response.newMessageList[i].newMessages[j].text;
+                    const newMessageText = newMessageList[i].newMessages[j].text;
 
                     if (!messagesDiv.innerText.includes(newMessageText)) {
                         ul.append(`<li class="replies">
@@ -205,17 +207,26 @@ function getMessages(){
             }else{
                 var lis =  $('#contacts ul').find('li')
                 for (var x = 0; x < lis.length; x++) { 
-                    if (lis[x].id == response.newMessageList[i].chatRoomName) { 
-                        var msgCounter = parseInt($(lis[x]).find('.wrap .meta p:last').text() || 0) + parseInt(response.newMessageList[i].newMessages.length);
-
+                    if (lis[x].id == newMessageList[i].chatRoomName) { 
+                        var msgCounter = parseInt($(lis[x]).find('.wrap .meta p:last').text() || 0) + parseInt(newMessageList[i].newMessages.length);
                         console.log("msgCounter ",msgCounter)
-                        $(lis[x]).find('.wrap .meta p:last').text(msgCounter);
-
+                      var  notification = $(lis[x]).find('.wrap .meta p:last')
+                      notification.text(msgCounter);
+                      if(msgCounter > 0)
+                           notification.css("display","inline")
+                    else{ 
+                        notification.css("display","none")
+                    }
                     }
                 }
             }
+
+         newMessageList[i].newMessages = []
+          
              
         }
+
+        $.cookie('newMessagesList',"j:"+ JSON.stringify(newMessageList))
     })
     .fail(function(){
 
@@ -231,6 +242,15 @@ function getChatRoomList(){
 
     return chatRoomList;
 }
+function getChatRoomsNewMessages(){
+    var cookieData = $.cookie('newMessagesList');
+    var jsonData = cookieData.substring(2); // remove the 'j:' prefix
+    var newMessagesList = JSON.parse(jsonData);
+    console.log("newMessagesList from getChatRoomsNewMessages() ",newMessagesList);
+
+    return newMessagesList;
+}
+
 
 function loadExistingChat(userName,chatRoom,clickedLi){
 
@@ -248,8 +268,9 @@ function loadExistingChat(userName,chatRoom,clickedLi){
         $('#contacts ul li').removeClass('active');
         currentOpenedChatRoom = chatRoom;
         $(clickedLi).addClass('active'); 
-        $(clickedLi) .find('.wrap .meta p:last').text("")
-
+        var notification =  $(clickedLi).find('.wrap .meta p:last')
+        notification.text("")
+        notification.css("display","none")
 
     var content = $('.content');
     content.html("");

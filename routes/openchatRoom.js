@@ -19,10 +19,17 @@ router.post("/",function(req,res,next){
     if (!req.cookies.chatRoomList) {
       res.cookie("chatRoomList", []);
       req.cookies.chatRoomList =[];
+      res.cookie("newMessagesList", []);
+      req.cookies.newMessagesList =[];
     } 
     if (!req.cookies.chatRoomList.includes(chatRoomName)) {
         req.cookies.chatRoomList.push(chatRoomName);
         res.cookie("chatRoomList", req.cookies.chatRoomList);
+
+        req.cookies.newMessagesList.push({ chatRoomName: chatRoomName, newMessages: [] });
+        res.cookie("newMessagesList", req.cookies.newMessagesList);
+
+       
       }
     
     
@@ -32,11 +39,9 @@ router.post("/",function(req,res,next){
     const messagesRef = chatroomRef.child("messages");
 
 
- // check if chat room already exists in chatRoomList
  let chatRoomIndex = chatRoomList.findIndex(room => room.chatRoomName === chatRoomName);
 
       if (chatRoomIndex === -1) {
-        // if chat room does not exist, create new chat room object in chatRoomList
         chatRoomList.push({ chatRoomName: chatRoomName, newMessages: [] });
         chatRoomIndex = chatRoomList.length - 1;
           
@@ -44,8 +49,8 @@ router.post("/",function(req,res,next){
         messagesRef.on("child_added", (snapshot) => {
         const message = snapshot.val();
         console.log("New message:",chatRoomName, message);
-        // add new message to chat room object in chatRoomList
         chatRoomList[chatRoomIndex].newMessages.push(message);
+    
       });
       }
    
