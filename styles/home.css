@@ -493,3 +493,7 @@ body {
   align-items: center;
   font-weight: 700;
 }
+
+.wrap .meta p:last{
+  display: none;
+  }

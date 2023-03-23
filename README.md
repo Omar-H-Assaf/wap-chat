@@ -1,7 +1,18 @@
 # wap-chat
-- [ ] save user in cookie.
+- [x] save user in cookie.
 - [ ] update login/signup style
-- [ ] add addContact
-- [ ] check users if existing 
+- [x] add addContact
+- [x] check users if existing 
 - [ ] add Settings
 - [ ] add signout
+- [x] find user by userName
+- [x] open private chatroom
+- [x] send message to private chatroom
+- [x] receive message from private chatroom
+- [x] listen for new incomming messages form private chatrooms
+- [x] Add a counter for inactive conversations to indicate when fresh messages have come
+- [x] move between conversations and load chats
+- [X] adde ajax to signup/signin
+- [ ] load users previous conversations once login in 
+- [ ] update user img
+- [ ] prevent empty msg to be sent

@@ -33,7 +33,6 @@ router.post("/",function(req,res,next){
         })
         res.send("success");
     }).catch((error) => {
-      const errorCode = error.code;
       const errorMessage = error.message;
       res.send(errorMessage)
     });
