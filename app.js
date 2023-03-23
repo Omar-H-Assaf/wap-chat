@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require("path")
 const ejs = require('ejs');
-const cookieParse = require("cookie-parser");
+const cookieParser = require("cookie-parser");
 const app = express();
 
 const loginRoutes = require('./routes/login.js');
@@ -25,7 +25,6 @@ app.use(express.static(path.join(__dirname,"styles")));
 app.use(express.static(path.join(__dirname,"js")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParse());
 app.listen(80, () => {
     console.log('Your Server is running on 80');
 });

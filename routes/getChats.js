@@ -3,9 +3,14 @@ const router = express.Router();
 var path = require("path");
 
 const {chatRoomList:chatRoomList} = require("./openchatRoom");
-
+const AsyncLock = require("async-lock");
+const lock = new AsyncLock();
 
 router.post("/",function(req,res,next){  
+
+  lock.acquire("myLock", function(done) {
+    // This code will only be executed by one request at a time
+    
     let userChatRooms = req.body.chatRoomList
     console.log("userChatRooms",userChatRooms)
      const cookieNewMessagesList =  req.cookies.newMessagesList;
@@ -17,15 +22,7 @@ router.post("/",function(req,res,next){
           if (chatRoomList[chatRoomIndex].newMessages.length !== 0) {
 
             const newMessage = chatRoomList[chatRoomIndex].newMessages[chatRoomList[chatRoomIndex].newMessages.length-1];
-          
-            // console.log("currentUser  = ", currentUser)
-            // console.log("cookieNewMessagesList before  = ", cookieNewMessagesList)
-    
-            // console.log("currentUser.userName == message.receiver  =",currentUser.userName == newMessage.receiver )
-            // console.log("message.receiver  =",newMessage.receiver )
-            // console.log("message  =",newMessage )
-
-
+           if(newMessage){
             if(currentUser.userName == newMessage.receiver){
              
               const chatRoomIndexNewMessagesList = cookieNewMessagesList.findIndex(room => room.chatRoomName === userChatRoom);
@@ -38,6 +35,16 @@ router.post("/",function(req,res,next){
               }
     
             }
+           }
+            // console.log("currentUser  = ", currentUser)
+            // console.log("cookieNewMessagesList before  = ", cookieNewMessagesList)
+    
+            // console.log("currentUser.userName == message.receiver  =",currentUser.userName == newMessage.receiver )
+            // console.log("message.receiver  =",newMessage.receiver )
+            // console.log("message  =",newMessage )
+
+
+    
     
            
 
@@ -49,7 +56,14 @@ router.post("/",function(req,res,next){
     //  console.log("cookieNewMessagesList after loop ",cookieNewMessagesList)
       res.cookie("newMessagesList",cookieNewMessagesList);
 
+      done(); // Release the lock
+      
       res.send("");
+
+    
+  });
+
+  
 });
 
 module.exports = router;

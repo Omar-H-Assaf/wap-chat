@@ -3,7 +3,6 @@ const router = express.Router();
 const path = require("path");
 
 
-const {auth,database,signInWithEmailAndPassword, ref, update}  = require("../ClientSdkfirebase");
 
 
 // Import the Firebase SDK
