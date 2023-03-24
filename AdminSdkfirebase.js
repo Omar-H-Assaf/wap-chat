@@ -6,7 +6,9 @@ var serviceAccount = require("./fireKey");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://chat-app-db39f-default-rtdb.firebaseio.com"
+  // databaseURL: "https://chat-app-db39f-default-rtdb.firebaseio.com/"
+  databaseURL: "https://whatsapp-project-355512-default-rtdb.firebaseio.com"
+
 });
 
 

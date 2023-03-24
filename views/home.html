@@ -6,7 +6,6 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
 
-    <script src="main.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,45 +18,13 @@
 <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
 <link rel="stylesheet" type="text/css" href="/home.css">
 <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"  type='text/css'>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="main.js"></script>
+
 
 <script>
-    function search(){
-        let input = document.getElementById('searchbar').value
-        input=input.toLowerCase();
-        const contactList = document.getElementsByClassName("contact");
-
-        for (i = 0; i < contactList.length; i++) { 
-            if (!contactList[i].childNodes[1].childNodes[3].childNodes[1].innerText.toLowerCase().includes(input)) {
-                contactList[i].style.display="none";
-            } else {
-                contactList[i].style.display="block";
-            }
-        }
-    }
-
-    function openForm() {
-            document.getElementById("myForm").style.display = "block";
-        }
-
-    function closeForm() {
-        document.getElementById("myForm").style.display = "none";
-    }
-
-    function addUser(name, lastMsg) {
-        $.ajax("/", {
-                "type": "POST",
-                "data": {
-                    "name": name,
-                    "lastMsg": lastMsg
-                },
-            }).done(function (response) {
-                location.reload();
-            })
-                .fail(function () {
-                  alert("error occured please try again later");
-                });
-    }
+   
 </script>
 </head>
 <body>
@@ -79,16 +46,18 @@
                     name="search" placeholder="Search contacts..." />
             </div>
             <div id="contacts">
-                <ul>
-                    <% for(let contact of userContacts) {%>
-                        <li class="contact">
+                <ul> 
+                   
+                    <% for(let i = 0; i < chatRoomsList.length; i++) {%>
+                        <% var  room = chatRoomsList[i]%>
+                        <li class="contact  <%= i == 0 ? 'active' : '' %> " onclick="loadExistingChat('<%= room.contactName %>','<%= room.name %>')"  id="'<%= room.name %>'">
                             <div class="wrap">
                                 <div id="profile-img">
-                                    <%= contact.name.charAt(0) %>
+                                    <%= room.contactName.charAt(0) %>
                                 </div>
                                 <div class="meta">
-                                    <p id="contact-name" class="name"><%= contact.name %></p>
-                                    <p class="preview"><%= contact.lastMsg  %></p>
+                                    <p id="contact-name" class="name"><%= room.contactName %></p>
+                                    <p class="preview"></p>
                                 </div>
                             </div>
                         </li>
@@ -101,52 +70,55 @@
             </div>
         </div>
         <div class="content">
-            <div class="contact-profile">
-                <div id="profile-img">
-                    L
+            <% if (chatRoomsList[0]) { %>
+                <div class="contact-profile">
+                    <div id="profile-img">
+                      
+                        <%= chatRoomsList[0].contactName.charAt(0) %>
+                       
+                    </div>
+                   
+                         <p><%= chatRoomsList[0].contactName %></p>
+                
                 </div>
-                <p>Louis Litt</p>
-            </div>
+                <% } %>
+          
+        
             <div class="messages">
                 <ul>
-                    <li class="sent">
-                        <p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
-                    </li>
-                    <li class="replies">
-                        <p>When you're backed against the wall, break the god damn thing down.</p>
-                    </li>
-                    <li class="replies">
-                        <p>Excuses don't win championships.</p>
-                    </li>
-                    <li class="sent">
-                        <p>Oh yeah, did Michael Jordan tell you that?</p>
-                    </li>
-                    <li class="replies">
-                        <p>No, I told him that.</p>
-                    </li>
-                    <li class="replies">
-                        <p>What are your choices when someone puts a gun to your head?</p>
-                    </li>
-                    <li class="sent">
-                        <p>What are you talking about? You do what they say or they shoot you.</p>
-                    </li>
-                    <li class="replies">
-                        <p>Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
-                    </li>
+                    <% if (chatRoomsList[0]) { %>
+                        <% for(let i = 0; i < chatRoomsList[0].messages.length; i++) {%>
+                            <% if (chatRoomsList[0].messages[i].receiver == chatRoomsList[0].contactName ) { %>
+                                <li class="sent">
+                                    <p><%= chatRoomsList[0].messages[i].text %></p>
+                                </li>
+                            <% }else{ %>
+                                <li class="replies">
+                                    <p><%= chatRoomsList[0].messages[i].text %></p>
+                                </li>
+                            <% } %>
+
+                        <% } %>
+                    <% } %>
+                  
+                  
                 </ul>
             </div>
-            <div class="message-input">
-                <div class="wrap">
-                <input type="text" placeholder="Write your message..." />
-                <button class="submit"><i class="login__icon fa fa-paper-plane" aria-hidden="true"></i></button>
+            <% if (chatRoomsList[0]) { %>
+                <div class="message-input">
+                    <div class="wrap">
+                    <input type="text" id="msg" placeholder="Write your message..." />
+                    <button class="submit" onclick="sendMessage('<%= room.contactName %>')"><i class="login__icon fa fa-paper-plane" aria-hidden="true"></i></button>
+                    </div>
                 </div>
-            </div>
+            <% } %>  
+         
         </div>
         <div class="form-popup" id="myForm">
             <div class="form-container">
                 <div id="search">
-                    <input type="text" id="searchbar" onkeyup="search();" 
-                        name="search" placeholder="Search contacts..." />
+                    <!-- <input type="text" id="searchbar" onkeyup="search();" 
+                        name="search" placeholder="Search contacts..." /> -->
                 </div>
                 <ul style="margin-bottom: 2rem;">
                     <% for (contact of contacts) { %>
@@ -154,7 +126,7 @@
                             <div class="wrap">
                                 <div class="add-contact">
                                     <p id="contact-name" class="name"><%= contact.name %></p>
-                                    <button class="add-contact-btn" onclick="addUser('<%= contact.name %>', '<%= contact.lastMsg %>')">Add User</button>
+                                    <button class="add-contact-btn" onclick="addUser('<%= contact.name %>')">Add User</button>
                                 </div>
                             </div>
                         </li>
@@ -167,40 +139,32 @@
             </div>
           </div>
     </div>
-    <script >$(".messages").animate({ scrollTop: $(document).height() }, "fast");
+    <script >
+    $(".messages").animate({ scrollTop: $(document).height() }, "fast");
     
-    function newMessage() {
-        message = $(".message-input input").val();
-        if($.trim(message) == '') {
-            return false;
-        }
-        $('<li class="sent"><p>' + message + '</p></li>').appendTo($('.messages ul'));
-        $('.message-input input').val(null);
-        $('.contact.active .preview').html('<span>You: </span>' + message);
-        $(".messages").animate({ scrollTop: $(document).height() }, "fast");
-    };
+    // function newMessage() {
+    //     message = $(".message-input input").val();
+    //     if($.trim(message) == '') {
+    //         return false;
+    //     }
+    //     $('<li class="sent"><p>' + message + '</p></li>').appendTo($('.messages ul'));
+    //     $('.message-input input').val(null);
+    //     $('.contact.active .preview').html('<span>You: </span>' + message);
+    //     $(".messages").animate({ scrollTop: $(document).height() }, "fast");
+    // };
     
-    $('.submit').click(function() {
-      newMessage();
-    });
+    // $('.submit').click(function() {
+    //   newMessage();
+    // });
     
-    $(window).on('keydown', function(e) {
-      if (e.which == 13) {
-        newMessage();
-        return false;
-      }
-    });
+    // $(window).on('keydown', function(e) {
+    //   if (e.which == 13) {
+    //     newMessage();
+    //     return false;
+    //   }
+    // });
 
-    function logOut() {
-          $.ajax("/login", {
-                "type": "GET",
-            }).done(function (response) {
-               window.location.href = 'login'
-            })
-                .fail(function () {
-                 console.log("fail");
-                });
-       }
+
 
     </script>
 </body>
