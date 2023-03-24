@@ -7,7 +7,6 @@ const app = express();
 const loginRoutes = require('./routes/login.js');
 const homeRoutes = require('./routes/home.js');
 const signupRoutes = require('./routes/signup.js');
-const userRoutes = require('./routes/users.js');
 const {router: chatRoomRoutes} = require('./routes/openchatRoom.js');
 
 const sendChatRoutes = require('./routes/sendChat.js');
@@ -33,7 +32,6 @@ app.listen(80, () => {
 
 app.use('/login',loginRoutes);
 app.use('/signup',signupRoutes);
-app.use('/findUser',userRoutes);
 app.use('/openChatRoom',chatRoomRoutes);
 app.use('/sendChat',sendChatRoutes);
 app.use('/getChat',getChatRoutes);

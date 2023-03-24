@@ -44,12 +44,12 @@
         document.getElementById("myForm").style.display = "none";
     }
 
-    function addUser(name, lastMsg) {
+    function addUser(name, uid) {
         $.ajax("/", {
                 "type": "POST",
                 "data": {
                     "name": name,
-                    "lastMsg": lastMsg
+                    "uid": uid
                 },
             }).done(function (response) {
                 location.reload();
@@ -58,11 +58,21 @@
                   alert("error occured please try again later");
                 });
     }
+window.onload = function(){
+        $.ajax("/findUsers", {
+                "type": "POST",
+                "data": {},
+            }).done(function (response) {
+                console.log(response);
+            })
+                .fail(function () {
+                  alert("error occured please try again later");
+                });
+}
+
 </script>
 </head>
 <body>
-
-    
     <div id="frame">
         <div id="sidepanel">
             <div id="profile">
@@ -88,7 +98,6 @@
                                 </div>
                                 <div class="meta">
                                     <p id="contact-name" class="name"><%= contact.name %></p>
-                                    <p class="preview"><%= contact.lastMsg  %></p>
                                 </div>
                             </div>
                         </li>
@@ -148,13 +157,13 @@
                     <input type="text" id="searchbar" onkeyup="search();" 
                         name="search" placeholder="Search contacts..." />
                 </div>
-                <ul style="margin-bottom: 2rem;">
+                <ul style="margin-bottom: 2rem; overflow:scroll;max-height: 10rem;">
                     <% for (contact of contacts) { %>
                         <li class="contact">
                             <div class="wrap">
                                 <div class="add-contact">
                                     <p id="contact-name" class="name"><%= contact.name %></p>
-                                    <button class="add-contact-btn" onclick="addUser('<%= contact.name %>', '<%= contact.lastMsg %>')">Add User</button>
+                                    <button class="add-contact-btn" onclick="addUser('<%= contact.name %>', '<%= contact.uid %>')">Add User</button>
                                 </div>
                             </div>
                         </li>

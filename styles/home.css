@@ -165,7 +165,7 @@ body {
   }
   #frame #sidepanel #contacts ul li.contact {
     position: relative;
-    padding: 10px 0 15px 0;
+    padding: 20px 0 15px 0;
     font-size: 0.9em;
     cursor: pointer;
   }
@@ -174,13 +174,7 @@ body {
       padding: 6px 0 46px 8px;
     }
   }
-  #frame #sidepanel #contacts ul li.contact:hover {
-    background: #32465a;
-  }
-  #frame #sidepanel #contacts ul li.contact.active {
-    background: #32465a;
-    border-right: 5px solid #435f7a;
-  }
+
   #frame #sidepanel #contacts ul li.contact .wrap {
     width: 88%;
     margin: 0 auto;
